@@ -1,13 +1,15 @@
 package com.example.app1.model
 
-import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class MenuListItem {
-    data class SectionHeader(val title: String) : MenuListItem()
+data class SettingItem(
+    val id: Int,
+    val title: String,
+    val description: String
+)
 
-    data class SettingItem(
-        val id: Int,
-        val title: String,
-        val description: String
-    ) : MenuListItem()
-}
+data class Section(
+    val title: String,
+    val items: List<SettingItem>,
+    val isHorizontal: Boolean = false)
+
+typealias MenuSections = List<Section>
