@@ -4,18 +4,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.app1.model.AppViewModel
 
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
-    var labelText by rememberSaveable { mutableStateOf("Search something...") }
+    val viewModel: AppViewModel = viewModel()
+    val labelText by viewModel.searchLabel.collectAsState()
 
     Column(
         modifier = modifier
@@ -31,10 +34,15 @@ fun SearchScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = { labelText = "Search Updated!" },
+            onClick = {
+                viewModel.updateSearchLabel("Search Updated!")
+            },
             modifier = Modifier.fillMaxWidth(0.7f)
         ) {
-            Text("Update Label", fontSize = 16.sp)
+            Text(
+                text = "Update Label",
+                fontSize = 16.sp
+            )
         }
     }
 }

@@ -16,11 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app1.model.Section
-import com.example.app1.model.MenuViewModel
+import com.example.app1.model.SettingItem
+import com.example.app1.model.AppViewModel
 
 @Composable
 fun MenuScreen(modifier: Modifier = Modifier) {
-    val viewModel: MenuViewModel = viewModel()
+    val viewModel: AppViewModel = viewModel()
     val sections by viewModel.menuSections.collectAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -69,15 +70,15 @@ fun HorizontalSection(section: Section) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5))
-                .padding(16.dp)
+                .padding(vertical = 12.dp, horizontal = 16.dp)
         )
-
+        Spacer(modifier = Modifier.height(12.dp))
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(section.items) { item ->
-                SettingCard(item)
+                SettingCard(item, isHorizontal = true)
             }
         }
     }
@@ -94,31 +95,31 @@ fun VerticalSection(section: Section) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFFF5F5F5))
-                .padding(16.dp)
+                .padding(vertical = 12.dp, horizontal = 16.dp)
         )
-
         section.items.forEach { item ->
-            SettingCard(item = item, isHorizontal = false)
+            SettingCard(item, isHorizontal = false)
         }
     }
 }
 
 @Composable
 fun SettingCard(
-    item: com.example.app1.model.SettingItem,
-    isHorizontal: Boolean = true
+    item: SettingItem,
+    isHorizontal: Boolean
 ) {
     Card(
-        modifier = Modifier
-            .let {
-                if (isHorizontal) {
-                    it.width(280.dp).height(140.dp)
-                } else {
-                    it.fillMaxWidth().wrapContentHeight()
-                }
-            },
+        modifier = if (isHorizontal) {
+            Modifier
+                .width(280.dp)
+                .height(140.dp)
+        } else {
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        },
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        onClick = { }
+        onClick = { /* Navigate to setting */ }
     ) {
         Column(
             modifier = Modifier
